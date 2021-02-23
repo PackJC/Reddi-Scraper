@@ -1,16 +1,16 @@
 import plotly.express as px
 import pandas as pd
-from WSBobjects import create_tickers
+from TokenObject import create_tickers
 import re
 from RedditSubScraper import get_data
 
-print("Creating {} ticker objects took {}")
+print("Scraper starting... ... ...")
 
 
 #Get the comments by calling the get_data function from the WSBreader module
-commentlist = get_data(100, "wallstreetbets") #adjust this number to pull different amounts of posts, limit 1000
+commentlist = get_data(10, "wallstreetbets") #adjust this number to pull different amounts of posts, limit 1000
 commentlist.sort(key = lambda x:x[1]) #Sort it by time
-print("Creating {} ticker objects took {}")
+print("Data loaded from PRAW Object... ... ...")
 
 #The following code block searches through each comment for '$' and then whatever letters come after. This is understood to be a ticker, due to popular notation.
 #Once it finds it, it takes away the $ and appends it to a master tickerlist.

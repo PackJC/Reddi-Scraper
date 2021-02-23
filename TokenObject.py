@@ -13,7 +13,7 @@ sia = SentimentIntensityAnalyzer()#VaderSentiment's analyzer, we use polarity_sc
 #The following code is the procedure to create a list of ticker objects, which carry data for each ticker.
 def create_tickers(tickerlist, commentlist):
     start = dt.datetime.now()
-    print("Starting object creation: {}".format(start))#Keeps track of how long this takes
+    print("Starting Token Object creation")#Keeps track of how long this takes
     obj_list = []
     #Initiate ticker objects
     for ticker in tickerlist:
@@ -38,7 +38,7 @@ def create_tickers(tickerlist, commentlist):
             obj.get_mv_avg()
         
     finish = dt.datetime.now()
-    print("Creating {} ticker objects took {}")
+    print("Token Objects created... ... ...")
     #tells you how long the object creation portion takes
     
 
