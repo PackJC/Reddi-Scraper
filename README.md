@@ -14,9 +14,13 @@ praw, pandas, datetime
 plotly.express
 
 To install the above dependancies, 
+
 >pip3 install vadersSentiment --user
+
 >pip3 install praw --user
+
 >pip3 install pandas --user
+
 >pip3 install plotly.express --user
 
 Running the script
