@@ -24,10 +24,9 @@ blacklist_words = [
 def get_tokens(posts, subredditName):
     redditObject = praw.Reddit(client_id = 'qZwrzSmQ6F-7Kg',
                          client_secret = '6bxmPxFlzpVT4SYUWXH6FdT1jbJrMw',
-                         username = 'DabCam',
+                         username = '*',
                          password = '*',
                          user_agent= 'SubReddit Sraper')
-    print("Successfully Authenticated... ... ...")
     selectedSubreddit = redditObject.subreddit(subredditName)
     #Sorts by new and pulls the last (n) posts of (subreddit)
     new_posts = selectedSubreddit.hot(limit = posts)
@@ -47,14 +46,10 @@ def get_tokens(posts, subredditName):
 pullLimit = input("How many posts? : ") 
 subReddit = input("Which subreddit? : ")
 numPullLimit = int(pullLimit)
-#Get the comments by calling the get_tokens function from the WSBreader module
 #Adjust this number to pull different amounts of posts, limit 1000
 commentList = get_tokens(int(pullLimit), subReddit)
 #Sort it by time
 commentList.sort(key = lambda x:x[1])
-
-
-
 #Think of this as going through every word and adding valid tokens
 #Over a large enough amount of data, this is very accurate for picking up the most talked about 'tokens'
 tickerList = []
@@ -70,8 +65,6 @@ for i in commentList:
 tickerList = set(tickerList)
 #Logs on, scrapes comments, creates ticker objects
 final_list = create_tickers(tickerList,commentList) 
-
-
 
 graph_list = []
 #Creates a nested list that has elements like [GME, 32, .5] for graphing
@@ -89,4 +82,3 @@ fig.update_layout(
         'xanchor': 'center',
         'yanchor': 'top'})
 fig.show() #initiates graph
-
