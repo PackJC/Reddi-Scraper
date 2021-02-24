@@ -25,7 +25,7 @@ def get_tokens(posts, subredditName):
     redditObject = praw.Reddit(client_id = 'qZwrzSmQ6F-7Kg',
                          client_secret = '6bxmPxFlzpVT4SYUWXH6FdT1jbJrMw',
                          username = 'DabCam',
-                         password = 'cole45',
+                         password = '*',
                          user_agent= 'SubReddit Sraper')
     print("Successfully Authenticated... ... ...")
     selectedSubreddit = redditObject.subreddit(subredditName)
