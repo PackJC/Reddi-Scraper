@@ -18,13 +18,14 @@ blacklist_words = [
       "SEP", "SEPT", "OCT", "NOV", "DEC", "FDA", "IV", "ER", "IPO", "RISE"
       "IPA", "URL", "MILF", "BUT", "SSN", "FIFA", "USD", "CPU", "AT",
       "GG", "ELON" , "DFV" , "A" , "I" , "THE" , "TO" , "YOU" , "FOR" , "AND",
-      "MY", "Y", "WE", "THIS", "JPOW", "NO", "DIP", "IN", "ALL", "HOLD", "BUY"
+      "MY", "Y", "WE", "THIS", "JPOW", "NO", "DIP", "IN", "ALL", "HOLD", "BUY",
+      "EOD", "YES", "TD", "FUCK"
    ]
    
 def get_tokens(posts, subredditName):
     redditObject = praw.Reddit(client_id = 'qZwrzSmQ6F-7Kg',
                          client_secret = '6bxmPxFlzpVT4SYUWXH6FdT1jbJrMw',
-                         username = '*',
+                         username = 'DabCam',
                          password = '*',
                          user_agent= 'SubReddit Sraper')
     selectedSubreddit = redditObject.subreddit(subredditName)
@@ -36,7 +37,7 @@ def get_tokens(posts, subredditName):
         #Appends submission to titleList
         titleList.append(submission.title)
         #Defines how many child comments are held in the data to be analyzed
-        submission.comments.replace_more(limit=20)
+        submission.comments.replace_more(limit=int(childCommentFeathering))
         for comment in submission.comments.list():
             #Appends comment and time to commentList. YYYY/MM/DD HH/MM/SS Date Formatting
             commentList.append([str(comment.body), dt.datetime.utcfromtimestamp(comment.created_utc).strftime('%Y-%m-%d %H:%M:%S')])
@@ -44,7 +45,9 @@ def get_tokens(posts, subredditName):
 
 
 pullLimit = input("How many posts? : ") 
-subReddit = input("Which subreddit? : ")
+subReddit = input("Which subreddit? : ")       
+childCommentFeathering = input("How many child comments to be analyzed?")
+
 numPullLimit = int(pullLimit)
 #Adjust this number to pull different amounts of posts, limit 1000
 commentList = get_tokens(int(pullLimit), subReddit)
