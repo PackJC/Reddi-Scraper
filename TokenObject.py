@@ -1,19 +1,13 @@
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-import os
-import re
-import praw
-import pandas as pd
-import datetime as dt
+import os #Used to access datetime
+import re #Used to find only words with 1-4 characters
+import praw #Best Python Reddit API Wrapper Available
+import pandas as pd 
+import datetime as dt #Used to record comment and submission times
 
-
-sia = SentimentIntensityAnalyzer()#VaderSentiment's analyzer, we use polarity_scores
-# https://github.com/cjhutto/vaderSentiment for docs and MIT license
-
-
+sia = SentimentIntensityAnalyzer() 
 #The following code is the procedure to create a list of ticker objects, which carry data for each ticker.
 def create_tickers(tickerlist, commentlist):
-    start = dt.datetime.now()
-    print("Starting Token Object creation")#Keeps track of how long this takes
     obj_list = []
     #Initiate ticker objects
     for ticker in tickerlist:
@@ -22,11 +16,11 @@ def create_tickers(tickerlist, commentlist):
     for obj in obj_list:
         obj.get_comments(commentlist) #calls get comments method - populates self.comments attribute with list of all comments where ticker was mentioned
         obj.get_count() #length of self.comments, i.e. how many unique comments mentioned the ticker
-        
+            
 
     final_list = [] #we're only going to call the rest of the methods if a stock was mentioned to save time
     for obj in obj_list:
-       
+           
         if obj.count>0:
             final_list.append(obj) #creates a final_list that has tickers that have been mentioned at least once
 
@@ -34,25 +28,12 @@ def create_tickers(tickerlist, commentlist):
         obj.analyzer()
         obj.average_sentiment()
         obj.get_positions()
-        if len(obj.comments) > 5: #create a 5 comment moving average of sentiment
+        if len(obj.comments) > 5: #create a 5 comment moving average of sentiment -- change to variable later!
             obj.get_mv_avg()
-        
-    finish = dt.datetime.now()
-    print("Token Objects created... ... ...")
-    #tells you how long the object creation portion takes
-    
-
     return final_list
-
-"""
-The below class is my way of keeping track of each ticker's data in an organized manner.
-Eventually more attributes and methods will be added for more robust analysis.
-I want to maybe try to use SQLalchemy to speed up the storage/recall of ticker objects
-for backtesting.
-"""
-
+        
 class Ticker:
-    
+
     def __init__(self, ticker):
         self.ticker = ticker
         self.comments = []
@@ -63,6 +44,8 @@ class Ticker:
         self.positions = []
         self.mv_times = []
 
+  
+
     def get_comments(self, commentlist): #loops through the comments you pulled and uses regex to see if the ticker is mentioned
         for comment in commentlist:
             if len(re.findall(r'\b{}\b'.format(self.ticker), str(comment))) > 0: #if it is mentioned,
@@ -70,9 +53,8 @@ class Ticker:
                 self.times.append(comment[1]) #and then append the ticker's self.times list with the time of the comment.
         return self.comments
 
-
     # Counts amount of Ticker occurences per Subreddit post, does not count occurences within a single comment
-    # i.e. "GME GME GME SUCKS!" = 1 where as "GME SUCKS!" "GO GME!" "GME MOONING" = 3
+    # i.e. "GME GME GME SUCKS!" = 1
     def get_count(self):
         self.count = len(self.comments)
         return self.count
@@ -98,6 +80,7 @@ class Ticker:
             self.avg_sent = round(sent / counter, ndigits=2)
         return self.avg_sent
 
+
     def get_positions(self): #particularly proud of this one :)
         # positions are in form SPY 300c 11/20 for example. On WSB this would mean "Call option on $SPY with a $300 strike expiring 11/20"
         # alt_format is in form 11/20 SPY 300C
@@ -110,6 +93,7 @@ class Ticker:
                # self.positions.append(alt_format)
                                     
         return self.positions
+        
     
     def get_mv_avg(self): #creates a 5 comment moving average of sentiment to track it over time. Issue is, time data isn't normalized
          number_series = pd.Series(self.sentiment)
@@ -127,8 +111,3 @@ class Ticker:
 
                  
          return df
-
-
-
-        
-
