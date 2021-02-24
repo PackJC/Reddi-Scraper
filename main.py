@@ -1,5 +1,5 @@
 import plotly.express as px
-from TokenObject import create_tickers
+from Token import create_tickers
 import pandas_datareader as pdr
 import pandas
 import praw
@@ -77,7 +77,7 @@ df = df.head(10) #Gives us the top 10 rows
 fig = px.bar(df, x = df.Ticker, y = df.Count, color = df.Avg_Sentiment) #creates bar graph
 fig.update_layout(
     title={
-        'text': "Wall Street Bets Top 15",
+        'text': "The Top 15 Chart",
         'x' : .5,
         'xanchor': 'center',
         'yanchor': 'top'})
