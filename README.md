@@ -1,5 +1,5 @@
-Reddit Scraper +Sentiment
-
+## Reddit Scraper +Sentiment
+![4f5eea80-766f-11eb-984d-badb1d42c803](https://user-images.githubusercontent.com/34726562/148868595-8e3ad1df-193e-49e0-92af-0edfaa1b8c24.png)
 Welcome to my project! I hope you've found everything easily. Although centered around Finance, this tool can be used to guage certain social and political trends.
 
 * Features and Updates
@@ -7,7 +7,7 @@ Welcome to my project! I hope you've found everything easily. Although centered 
 * Running the script
 * About the Sentiment Scoring
 
-Dependencies
+## Dependencies
 
 vaderSentiment, os, re
 praw, pandas, datetime 
@@ -23,7 +23,7 @@ To install the above dependancies,
 
 >pip3 install plotly.express --user
 
-Running the script
+## Running the script
 In order to run this script, you will need to download the Python IDE, IDLE. This project is built with Python 3.9. Once downloaded, open up main.py. Before you run the script you you will need a reddit account with developer features enabled. 
 
     redditObject = praw.Reddit(client_id = '************',
