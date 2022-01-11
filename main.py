@@ -50,10 +50,10 @@ blacklist_words = [
    ]
    
 def get_tokens(posts, subredditName):
-    redditObject = praw.Reddit(client_id = 'qZwrzSmQ6F-7Kg',
-                         client_secret = '6bxmPxFlzpVT4SYUWXH6FdT1jbJrMw',
-                         username = 'DabCam',
-                         password = 'dabcam21',
+    redditObject = praw.Reddit(client_id = '',
+                         client_secret = '',
+                         username = '',
+                         password = '',
                          user_agent= 'SubReddit Sraper')
     selectedSubreddit = redditObject.subreddit(subredditName)
     #Sorts by new and pulls the last (n) posts of (subreddit)
