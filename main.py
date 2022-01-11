@@ -54,7 +54,7 @@ def get_tokens(posts, subredditName):
                          client_secret = '',
                          username = '',
                          password = '',
-                         user_agent= 'SubReddit Sraper')
+                         user_agent= 'SubReddit Scraper')
     selectedSubreddit = redditObject.subreddit(subredditName)
     #Sorts by new and pulls the last (n) posts of (subreddit)
     new_posts = selectedSubreddit.hot(limit = posts)
