@@ -5,25 +5,17 @@ import pandas
 import praw
 import datetime as dt
 import re
-
-
-
 import matplotlib.pyplot as plt
-
 
 server = "www.nasdaqtrader.com"
 directory = "SymbolDirectory"
 filename = "nasdaqlisted.txt"
-
-#from ftplib import FTP
-#ftp = FTP(server) #Set server address
-#ftp.login()  # Connect to server
-#ftp.cwd(directory) # Move to the desired folder in server
-#ftp.retrbinary('RETR ' + filename,open(filename, 'wb').write) # Download file from server
-#ftp.close() # Close connection
-
+_client_id = ''
+_client_secret = ''
+_username = ''
+_password = ''
+_user_agent= 'SubReddit Scraper'
 NYSE_Tokens = []
-
 #get file object
 f = open("nasdaqlisted.txt", "r")
 
@@ -34,7 +26,6 @@ while(True):
         break
 #close file
 f.close
-
 
 
 blacklist_words = [
@@ -50,11 +41,11 @@ blacklist_words = [
    ]
    
 def get_tokens(posts, subredditName):
-    redditObject = praw.Reddit(client_id = '',
-                         client_secret = '',
-                         username = '',
-                         password = '',
-                         user_agent= 'SubReddit Scraper')
+    redditObject = praw.Reddit(client_id = _client_id,
+                         client_secret = _client_secret,
+                         username = _username,
+                         password = _password,
+                         user_agent= _user_agent)
     selectedSubreddit = redditObject.subreddit(subredditName)
     #Sorts by new and pulls the last (n) posts of (subreddit)
     new_posts = selectedSubreddit.hot(limit = posts)
@@ -70,7 +61,6 @@ def get_tokens(posts, subredditName):
             commentList.append([str(comment.body), dt.datetime.utcfromtimestamp(comment.created_utc).strftime('%Y-%m-%d %H:%M:%S')])
     return commentList
 
-
 pullLimit = input("How many posts? : ") 
 subReddit = input("Which subreddit? : ")       
 childCommentFeathering = input("How many child comments to be analyzed?")
@@ -84,7 +74,6 @@ commentList.sort(key = lambda x:x[1])
 #Over a large enough amount of data, this is very accurate for picking up the most talked about 'tokens'
 tickerList = []
 
-
 for i in commentList:
     tickers = re.findall('[A-Z]{1,4}', str(i[0])) 
     if len(tickers) > 0:
@@ -92,7 +81,6 @@ for i in commentList:
             if j and j in NYSE_Tokens and j not in blacklist_words:
                 tickerList.append(j)
 
-                
 #Removes duplicate tokens             
 tickerList = set(tickerList)
 #Logs on, scrapes comments, creates ticker objects
@@ -102,14 +90,10 @@ graph_list = []
 #Creates a nested list that has elements like [GME, 32, .5] for graphing
 for obj in final_list:
     graph_list.append([obj.ticker,obj.count,obj.avg_sent])
-    
-    
+
 df = pandas.DataFrame(graph_list, columns = ['Ticker', 'Count', 'Avg_Sentiment']) #creates a dataframe from the graph_list
 df = df.sort_values(by = 'Count', ascending = False)#Sorts it by count
 df = df.head(10) #Gives us the top 10 rows
-
-print("test")
-
 
 fig = px.bar(df, x = df.Ticker, y = df.Count, color = df.Avg_Sentiment) #creates bar graph
 fig.update_layout(
@@ -119,36 +103,3 @@ fig.update_layout(
         'xanchor': 'center',
         'yanchor': 'top'})
 fig.show() #initiates graph
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
